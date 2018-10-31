@@ -7,7 +7,6 @@
 #include <string>
 #include <iostream>
 
-#include "Planet.h"
 #include "Vektor2d.h"
 
 // Simulationsgeschwindigkeit
@@ -15,15 +14,24 @@ const double DT = 100.0;
 
 class GameWindow : public Gosu::Window
 {
-	Gosu::Image rakete;
-	double x, y, angle;
+	Gosu::Image ball;
+	double x, y, xSpeed, ySpeed;
+	const unsigned int w_width = 1500;
+	const unsigned int w_height = 900;
+	const unsigned int schleuderspitze_x = 230;
+	const unsigned int schleuderspitze_y = w_height - 200;
+	const double xSpeedCorrection = 0.125;
+	const double ySpeedCorrection = 0.19;
+	const double gravity = 1.5;
+	bool isFlying = false;
+
 public:
 	
 	GameWindow()
-		: Window(800, 600),
-		rakete("rakete.png") //direkt beim initialisieren mit bild laden
+		: Window(1500, 900),
+		ball("planet3.png") //direkt beim initialisieren mit bild laden
 	{
-		set_caption("Mein Gosu Tutorial Game mit Git bla bla");
+		set_caption("Angry Balls");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -31,29 +39,55 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
-		graphics().draw_line(
-			10, 20, Gosu::Color::RED,
-			200,100,Gosu::Color::GREEN,
-			0.0
-		);
-		/*graphics().draw_triangle(
-			x, y, Gosu::Color::YELLOW,
-			x+10, y+30, Gosu::Color::FUCHSIA,
-			x+25, y+22, Gosu::Color::WHITE,
-			0.0
-		);*/
-		rakete.draw_rot(x, y, 0.0, angle, 0.5, 0.0);
+		if (!isFlying) {		//ball nicht unterwegs, an schleuder
+			graphics().draw_quad(							//Schleuderstab
+				220, w_height, Gosu::Color::YELLOW,
+				240, w_height, Gosu::Color::YELLOW,
+				220, w_height - 200, Gosu::Color::YELLOW,
+				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
+
+			ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+
+			graphics().draw_line(
+				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
+
+
+		}
+
+
+		else {		//Ball losgeschossen, keine steuerung
+			graphics().draw_quad(							//Schleuderstab
+				220, w_height, Gosu::Color::YELLOW,
+				240, w_height, Gosu::Color::YELLOW,
+				220, w_height - 200, Gosu::Color::YELLOW,
+				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
+
+			ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+		}
 	}
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		if (input().down(Gosu::ButtonName::KB_UP)) { y -= 5; angle = 0; }
-		if (input().down(Gosu::ButtonName::KB_DOWN)) { y += 5; angle = 180; }
-		if (input().down(Gosu::ButtonName::KB_RIGHT)) { x += 5; angle = 90; }
-		if (input().down(Gosu::ButtonName::KB_LEFT)) { x -= 5; angle = -90; }
+		
+		if (!isFlying) {				//fliegt nicht, eingabe
+			x = input().mouse_x();
+			y = input().mouse_y();
+			if (input().down(Gosu::ButtonName::MS_LEFT)) {
+				isFlying = true;
+				ySpeed = (schleuderspitze_y - y)*ySpeedCorrection;
+				xSpeed = (schleuderspitze_x - x)*xSpeedCorrection;
+			}
+		}
+
+		else {							//fliegt, keine eingabe
+			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; }
+			y = y + ySpeed;
+			x = x + xSpeed;
+			ySpeed = ySpeed + gravity;
+		}
+
 
 		if (input().down(Gosu::ButtonName::KB_ESCAPE)) { this->close(); }
-
 	}
 };
 
