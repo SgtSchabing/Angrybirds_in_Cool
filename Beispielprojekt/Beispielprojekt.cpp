@@ -23,7 +23,7 @@ public:
 		: Window(800, 600),
 		rakete("rakete.png") //direkt beim initialisieren mit bild laden
 	{
-		set_caption("Mein Gosu Tutorial Game mit Git");
+		set_caption("Mein Gosu Tutorial Game mit Git bla bla");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
