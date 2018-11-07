@@ -16,7 +16,7 @@ class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
 	Gosu::Image blue_circle;
-	double x, y, xSpeed, ySpeed,x_c = 1,y_c = 1, x_c_speed, y_c_speed, starting_point;
+	double x, y, xSpeed, ySpeed,x_c = 2000,y_c = 1, x_c_speed, y_c_speed, starting_point;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
 	const unsigned int schleuderspitze_x = 230;
@@ -43,7 +43,7 @@ public:
 	void draw() override
 	{
 		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 0, 0, 0.0, 1, 1,Gosu::Color::GREEN);
-blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
+
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
 			240, w_height, Gosu::Color::YELLOW,
@@ -51,6 +51,8 @@ blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
 			240, w_height - 200, Gosu::Color::YELLOW, 0.0);
 
 		ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+
+		blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.1, 0.2);
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 			
@@ -72,7 +74,8 @@ blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
 	void update() override
 	{
 		y_c = 100;
-		x_c = 100;
+		x_c = x_c - 6;
+
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
 			y = input().mouse_y();
