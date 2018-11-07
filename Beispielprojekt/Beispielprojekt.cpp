@@ -15,7 +15,8 @@ const double DT = 100.0;
 class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
-	double x, y, xSpeed, ySpeed;
+	Gosu::Image blue_circle;
+	double x, y, xSpeed, ySpeed,x_c,y_c, x_c_speed, y_c_speed, starting_point;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
 	const unsigned int schleuderspitze_x = 230;
@@ -23,17 +24,17 @@ class GameWindow : public Gosu::Window
 	const double xSpeedCorrection = 0.3;
 	const double ySpeedCorrection = 0.19;
 	const double gravity = 1.5;
+	const double wind = 2;
 	bool isFlying = false;
-
 	int score;
-
 public:
 	
 	GameWindow()
 		: Window(1500, 900),
-		ball("planet3.png") //direkt beim initialisieren mit bild laden
+		ball("planet3.png"), //direkt beim initialisieren mit bild laden
+		blue_circle("blue_circle.png")
 	{
-		set_caption("Angry Ballz");
+	set_caption("Angry Ballz");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -51,29 +52,27 @@ public:
 
 		ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
 
-
-		
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 			
+
+			
+
 			graphics().draw_line(
 				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
 
+			blue_circle.draw_rot(x_c,y_c,30,0.0,0,0.5,0.5,5,5);
 		}
 
 
 		else {		//Ball losgeschossen, keine steuerung
 			
 		}
-
-
-		
-
-
 	}
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		
+		y_c = 100;
+		x_c = x_c + wind/100;
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
 			y = input().mouse_y();
