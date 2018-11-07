@@ -41,7 +41,7 @@ public:
 	{
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 			graphics().draw_quad(							//Schleuderstab
-				220, w_height, Gosu::Color::YELLOW,
+				220, w_height, Gosu::Color::GREEN,
 				240, w_height, Gosu::Color::YELLOW,
 				220, w_height - 200, Gosu::Color::YELLOW,
 				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
