@@ -29,6 +29,9 @@ class GameWindow : public Gosu::Window
 	bool isFlying = false;
 	int score;
 	bool checkedforCollision;
+	int lifs = 4;
+
+
 public:
 	
 	GameWindow()
@@ -95,7 +98,7 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; }
+			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; checkedforCollision = false; }
 			y = y + ySpeed;
 			x = x + xSpeed;
 			ySpeed = ySpeed + gravity;
@@ -104,6 +107,7 @@ public:
 			if ((x_c < x) && (abs(y_c - y) < c_height/2) && !checkedforCollision) {
 				score++;
 				checkedforCollision = true;
+
 			}
 
 		}
