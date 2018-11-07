@@ -76,4 +76,9 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="DS-DIGI.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
 </Project>

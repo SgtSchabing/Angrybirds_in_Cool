@@ -41,7 +41,7 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
-		Gosu::Font::Font(80).draw(std::to_string(score), 0, 0, 0.0);
+		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 0, 0, 0.0, 1, 1,Gosu::Color::GREEN);
 
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
