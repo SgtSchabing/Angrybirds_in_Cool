@@ -29,7 +29,9 @@ class GameWindow : public Gosu::Window
 	bool isFlying = false;
 	int score;
 	bool checkedforCollision;
+	bool durchRinggeflogen;
 	int lifs = 4;
+
 
 
 public:
@@ -47,7 +49,9 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
-		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 10, 25, 0.0, 1, 1,Gosu::Color::GREEN);
+		
+		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score) + "    " + std::to_string(lifs) , 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
+	
 
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
@@ -98,20 +102,32 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; checkedforCollision = false; }
-			y = y + ySpeed;
-			x = x + xSpeed;
-			ySpeed = ySpeed + gravity;
+			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; checkedforCollision = false; lifs = 4; }
+			else {
+				y = y + ySpeed;
+				x = x + xSpeed;
+				ySpeed = ySpeed + gravity;
 
-			//Kollisionsabfrage blauer kreis
-			if ((x_c < x) && (abs(y_c - y) < c_height/2) && !checkedforCollision) {
-				score++;
-				checkedforCollision = true;
+				//Kollisionsabfrage blauer kreis
+				if ((x_c < x) && !checkedforCollision) {
+
+					checkedforCollision = true;
+
+					if ((abs(y_c - y) < c_height / 2)) {	//durch ring geflogen
+						score++;
+						isFlying = false;
+						checkedforCollision = false;
+					}
+				}
+
+				if ((y > w_height + 150) && (lifs > 0)) {
+					isFlying = false;
+					checkedforCollision = false;
+					lifs--;
+				}
 
 			}
-
 		}
-
 		if (input().down(Gosu::ButtonName::KB_ESCAPE)) { this->close(); }
 	}
 };
