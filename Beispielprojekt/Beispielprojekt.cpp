@@ -43,7 +43,7 @@ public:
 	void draw() override
 	{
 		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 0, 0, 0.0, 1, 1,Gosu::Color::GREEN);
-blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
+		blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
 			240, w_height, Gosu::Color::YELLOW,
@@ -73,6 +73,9 @@ blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
 	{
 		y_c = 100;
 		x_c = 100;
+
+
+
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
 			y = input().mouse_y();
