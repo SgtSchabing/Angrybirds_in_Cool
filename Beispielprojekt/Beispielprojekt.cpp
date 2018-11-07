@@ -20,7 +20,7 @@ class GameWindow : public Gosu::Window
 	const unsigned int w_height = 900;
 	const unsigned int schleuderspitze_x = 230;
 	const unsigned int schleuderspitze_y = w_height - 200;
-	const double xSpeedCorrection = 0.125;
+	const double xSpeedCorrection = 0.3;
 	const double ySpeedCorrection = 0.19;
 	const double gravity = 1.5;
 	bool isFlying = false;
@@ -31,7 +31,7 @@ public:
 		: Window(1500, 900),
 		ball("planet3.png") //direkt beim initialisieren mit bild laden
 	{
-		set_caption("Angry Balls");
+		set_caption("Angry Ballz");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
