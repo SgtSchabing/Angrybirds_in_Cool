@@ -15,16 +15,17 @@ const double DT = 100.0;
 class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
-	Gosu::Image blue_circle;
-	double x, y, xSpeed, ySpeed,x_c = 2000,y_c = 1, x_c_speed, y_c_speed, starting_point;
+	Gosu::Image fire_circle;
+	double x, y, xSpeed, ySpeed,x_c = 1800,y_c, x_c_default = 1800;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
 	const double c_height = 690 * 0.2;
 	const unsigned int schleuderspitze_x = 230;
 	const unsigned int schleuderspitze_y = w_height - 200;
-	const double xSpeedCorrection = 0.3;
-	const double ySpeedCorrection = 0.3;
-	const double gravity = 1;
+	const double xSpeedCorrection = 0.4;
+	const double ySpeedCorrection = 0.4;
+	const double gravity = 1.5;
+	const double wind = 8;
 	bool isFlying = false;
 	int score;
 	bool checkedforCollision;
@@ -33,7 +34,7 @@ public:
 	GameWindow()
 		: Window(1500, 900),
 		ball("planet3.png"), //direkt beim initialisieren mit bild laden
-		blue_circle("blue_circle.png")
+		fire_circle("fire_circle.png")
 	{
 	set_caption("Angry Ballz");
 	}
@@ -43,7 +44,7 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
-		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 0, 0, 0.0, 1, 1,Gosu::Color::GREEN);
+		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score), 10, 25, 0.0, 1, 1,Gosu::Color::GREEN);
 
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
@@ -53,7 +54,8 @@ public:
 
 		ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
 
-		blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.1, 0.2);
+		fire_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.08, 0.2);
+		
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 		
@@ -73,8 +75,14 @@ public:
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		y_c = 100;
-		x_c = x_c - 3;
+		
+		y_c = 300;						//Ring fliegt durch die Gegend
+		x_c = x_c - wind;
+		if (x_c < 0)					 //nochmal fliegen
+		{
+			x_c = x_c_default;
+		}
+
 
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
