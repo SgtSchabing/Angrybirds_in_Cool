@@ -22,10 +22,10 @@ class GameWindow : public Gosu::Window
 	const double c_height = 690 * 0.2;
 	const unsigned int schleuderspitze_x = 230;
 	const unsigned int schleuderspitze_y = w_height - 200;
-	const double xSpeedCorrection = 0.4;
-	const double ySpeedCorrection = 0.4;
+	const double xSpeedCorrection = 0.2;
+	const double ySpeedCorrection = 0.3;
 	const double gravity = 1.5;
-	const double wind = 8;
+	const double wind = 6;
 	bool isFlying = false;
 	int score;
 	bool checkedforCollision;
