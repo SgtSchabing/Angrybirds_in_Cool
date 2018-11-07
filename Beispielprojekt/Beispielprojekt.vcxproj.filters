@@ -61,6 +61,15 @@
     <Image Include="rakete.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="fire_circle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="red_circle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="blue_circle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Beispielprojekt.rc">

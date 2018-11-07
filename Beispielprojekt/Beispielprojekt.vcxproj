@@ -175,10 +175,13 @@
     <ClCompile Include="Vektor2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="blue_circle.png" />
+    <Image Include="fire_circle.png" />
     <Image Include="planet1.png" />
     <Image Include="planet2.png" />
     <Image Include="planet3.png" />
     <Image Include="rakete.png" />
+    <Image Include="red_circle.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Beispielprojekt.rc" />
