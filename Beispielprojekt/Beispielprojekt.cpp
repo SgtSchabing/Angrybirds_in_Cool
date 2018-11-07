@@ -25,6 +25,8 @@ class GameWindow : public Gosu::Window
 	const double gravity = 1.5;
 	bool isFlying = false;
 
+	int score;
+
 public:
 	
 	GameWindow()
@@ -39,31 +41,34 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
+		Gosu::Font::Font(80).draw(std::to_string(score), 0, 0, 0.0);
+
+		graphics().draw_quad(							//Schleuderstab
+			220, w_height, Gosu::Color::YELLOW,
+			240, w_height, Gosu::Color::YELLOW,
+			220, w_height - 200, Gosu::Color::YELLOW,
+			240, w_height - 200, Gosu::Color::YELLOW, 0.0);
+
+		ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+
+
+		
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
-			graphics().draw_quad(							//Schleuderstab
-				220, w_height, Gosu::Color::GREEN,
-				240, w_height, Gosu::Color::YELLOW,
-				220, w_height - 200, Gosu::Color::YELLOW,
-				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
-
-			ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
-
+			
 			graphics().draw_line(
 				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
-
 
 		}
 
 
 		else {		//Ball losgeschossen, keine steuerung
-			graphics().draw_quad(							//Schleuderstab
-				220, w_height, Gosu::Color::YELLOW,
-				240, w_height, Gosu::Color::YELLOW,
-				220, w_height - 200, Gosu::Color::YELLOW,
-				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
-
-			ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+			
 		}
+
+
+		
+
+
 	}
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
@@ -86,7 +91,7 @@ public:
 			ySpeed = ySpeed + gravity;
 		}
 
-
+		score++;
 		if (input().down(Gosu::ButtonName::KB_ESCAPE)) { this->close(); }
 	}
 };
