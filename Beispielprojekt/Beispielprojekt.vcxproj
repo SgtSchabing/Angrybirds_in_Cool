@@ -189,6 +189,9 @@
   <ItemGroup>
     <Font Include="DS-DIGI.TTF" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="game.mp3" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

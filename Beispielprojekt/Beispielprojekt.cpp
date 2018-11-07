@@ -16,6 +16,9 @@ class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
 	Gosu::Image fire_circle;
+	Gosu::Song game;
+
+
 	double x, y, xSpeed, ySpeed,x_c = 1800,y_c, x_c_default = 1800;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
@@ -34,10 +37,14 @@ public:
 	GameWindow()
 		: Window(1500, 900),
 		ball("planet3.png"), //direkt beim initialisieren mit bild laden
-		fire_circle("fire_circle.png")
+		fire_circle("fire_circle.png"),
+		game("game.mp3")
 	{
 	set_caption("Angry Ballz");
 	}
+
+	
+
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
@@ -68,7 +75,7 @@ public:
 
 		else {		//Ball losgeschossen, keine steuerung
 
-			
+			game.play();
 			
 		}
 	}
@@ -76,6 +83,8 @@ public:
 	void update() override
 	{
 		
+
+
 		y_c = 300;						//Ring fliegt durch die Gegend
 		x_c = x_c - wind;
 		if (x_c < 0)					 //nochmal fliegen
@@ -117,4 +126,6 @@ int main()
 {
 	GameWindow window;
 	window.show();
+
+
 }
