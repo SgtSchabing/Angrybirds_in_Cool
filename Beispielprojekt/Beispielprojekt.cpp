@@ -19,14 +19,15 @@ class GameWindow : public Gosu::Window
 	double x, y, xSpeed, ySpeed,x_c = 2000,y_c = 1, x_c_speed, y_c_speed, starting_point;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
+	const double c_height = 690 * 0.2;
 	const unsigned int schleuderspitze_x = 230;
 	const unsigned int schleuderspitze_y = w_height - 200;
 	const double xSpeedCorrection = 0.3;
-	const double ySpeedCorrection = 0.19;
-	const double gravity = 1.5;
-	const double wind = 2;
+	const double ySpeedCorrection = 0.3;
+	const double gravity = 1;
 	bool isFlying = false;
 	int score;
+	bool checkedforCollision;
 public:
 	
 	GameWindow()
@@ -55,10 +56,7 @@ public:
 		blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.1, 0.2);
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
-			
-
-			
-
+		
 			graphics().draw_line(
 				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
 
@@ -67,6 +65,8 @@ public:
 
 
 		else {		//Ball losgeschossen, keine steuerung
+
+			
 			
 		}
 	}
@@ -74,7 +74,7 @@ public:
 	void update() override
 	{
 		y_c = 100;
-		x_c = x_c - 6;
+		x_c = x_c - 3;
 
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
@@ -87,13 +87,19 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; }
+			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; }
 			y = y + ySpeed;
 			x = x + xSpeed;
 			ySpeed = ySpeed + gravity;
+
+			//Kollisionsabfrage blauer kreis
+			if ((x_c < x) && (abs(y_c - y) < c_height/2) && !checkedforCollision) {
+				score++;
+				checkedforCollision = true;
+			}
+
 		}
 
-		score++;
 		if (input().down(Gosu::ButtonName::KB_ESCAPE)) { this->close(); }
 	}
 };
