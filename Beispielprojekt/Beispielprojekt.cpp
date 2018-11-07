@@ -16,7 +16,7 @@ class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
 	Gosu::Image blue_circle;
-	double x, y, xSpeed, ySpeed,x_c,y_c, x_c_speed, y_c_speed, starting_point;
+	double x, y, xSpeed, ySpeed,x_c = 1,y_c = 1, x_c_speed, y_c_speed, starting_point;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
 	const unsigned int schleuderspitze_x = 230;
@@ -41,6 +41,8 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
+		blue_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 5, 5);
+
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 			graphics().draw_quad(							//Schleuderstab
 				220, w_height, Gosu::Color::GREEN,
@@ -53,7 +55,7 @@ public:
 			graphics().draw_line(
 				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
 
-			blue_circle.draw_rot(x_c,y_c,30,0.0,0,0.5,0.5,5,5);
+			
 		}
 
 
@@ -65,13 +67,15 @@ public:
 				240, w_height - 200, Gosu::Color::YELLOW, 0.0);
 
 			ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
+
+			
 		}
 	}
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
 		y_c = 100;
-		x_c = x_c + wind/100;
+		x_c = 100;
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
 			y = input().mouse_y();
