@@ -20,8 +20,9 @@ class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
 	Gosu::Image fire_circle;
+	Gosu::Image heart;
 	Gosu::Song game;
-
+	Gosu::Font digifont;
 
 	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
 	const unsigned int w_width = 1500;
@@ -48,7 +49,9 @@ public:
 		: Window(1500, 900),
 		ball("planet3.png"), //direkt beim initialisieren mit bild laden
 		fire_circle("fire_circle.png"),
-		game("game.mp3")
+		game("game.mp3"),
+		heart("heart.png"),
+		digifont(80, ".//DS-DIGI.TTF")
 	{
 	set_caption("Angry Ballz");
 	}
@@ -62,7 +65,7 @@ public:
 	void draw() override
 	{
 		
-		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score) + "    " + std::to_string(lifs) , 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
+		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
 	
 
 		graphics().draw_quad(							//Schleuderstab
@@ -75,6 +78,13 @@ public:
 
 		fire_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.08, 0.2);
 		
+
+		switch (lifs) {
+		case 1: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 2: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 3: { heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 4: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.3, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		}
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 		
