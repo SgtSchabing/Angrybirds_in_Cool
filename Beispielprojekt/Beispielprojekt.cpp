@@ -39,7 +39,7 @@ class GameWindow : public Gosu::Window
 	bool durchRinggeflogen;
 	int lifs = 4;
 	int random = 1;
-	bool beh = 0;
+	bool beh = false;
 
 
 public:
@@ -91,17 +91,16 @@ public:
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		if (beh == 0)
+		if (beh == false)
 		{
-			srand(time(NULL));
-			beh = 1;
+			srand(time(NULL)); //Zufallsgenerator initialisieren
+			beh = true;
 		}
 							
-		x_c = x_c - wind;
+		x_c = x_c - wind;				//Kreis bewegt sich
 		if (x_c < 0)					 //nochmal fliegen
 		{
 			x_c = x_c_default;
-			
 			random = rand() % 700 + 50;
 			y_c = random;
 		}
@@ -139,9 +138,7 @@ public:
 						score++;
 						isFlying = false;
 						checkedforCollision = false;
-
-						x_c = x_c_default;
-						
+						x_c = x_c_default;					//nochmal fliegen
 						random = rand() % 700 + 50;
 						y_c = random;
 					}
