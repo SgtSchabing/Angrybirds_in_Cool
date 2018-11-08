@@ -7,10 +7,14 @@
 #include <string>
 #include <iostream>
 
+#include <stdlib.h>
+#include <time.h>
+
 #include "Vektor2d.h"
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
+
 
 class GameWindow : public Gosu::Window
 {
@@ -19,7 +23,7 @@ class GameWindow : public Gosu::Window
 	Gosu::Song game;
 
 
-	double x, y, xSpeed, ySpeed,x_c = 1800,y_c, x_c_default = 1800;
+	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
 	const unsigned int w_width = 1500;
 	const unsigned int w_height = 900;
 	const double c_height = 690 * 0.2;
@@ -34,7 +38,7 @@ class GameWindow : public Gosu::Window
 	bool checkedforCollision;
 	bool durchRinggeflogen;
 	int lifs = 4;
-
+	int random = 1;
 
 
 public:
@@ -90,13 +94,14 @@ public:
 	void update() override
 	{
 		
-
-
-		y_c = 300;						//Ring fliegt durch die Gegend
+							
 		x_c = x_c - wind;
 		if (x_c < 0)					 //nochmal fliegen
 		{
 			x_c = x_c_default;
+			srand(time(NULL));
+			random = rand() % 700 + 30;
+			y_c = random;
 		}
 
 
@@ -111,7 +116,13 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) { isFlying = false; score = 0; checkedforCollision = false; lifs = 4; }
+			if (input().down(Gosu::ButtonName::MS_RIGHT)) 
+			{ 
+				isFlying = false; 
+				score = 0; 
+				checkedforCollision = false; 
+				lifs = 4; 
+			}
 			else {
 				y = y + ySpeed;
 				x = x + xSpeed;
@@ -126,6 +137,11 @@ public:
 						score++;
 						isFlying = false;
 						checkedforCollision = false;
+
+						x_c = x_c_default;
+						srand(time(NULL));
+						random = rand() % 700 + 30;
+						y_c = random;
 					}
 				}
 
@@ -140,6 +156,7 @@ public:
 		if (input().down(Gosu::ButtonName::KB_ESCAPE)) { this->close(); }
 	}
 };
+
 
 // C++ Hauptprogramm
 int main()
