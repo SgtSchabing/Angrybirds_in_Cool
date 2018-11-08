@@ -39,6 +39,7 @@ class GameWindow : public Gosu::Window
 	bool durchRinggeflogen;
 	int lifs = 4;
 	int random = 1;
+	bool beh = 0;
 
 
 public:
@@ -78,14 +79,11 @@ public:
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 		
 			graphics().draw_line(
-				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
-
-			
+				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);	
 		}
 
 
 		else {		//Ball losgeschossen, keine steuerung
-
 			game.play();
 			
 		}
@@ -93,14 +91,18 @@ public:
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		
+		if (beh == 0)
+		{
+			srand(time(NULL));
+			beh = 1;
+		}
 							
 		x_c = x_c - wind;
 		if (x_c < 0)					 //nochmal fliegen
 		{
 			x_c = x_c_default;
-			srand(time(NULL));
-			random = rand() % 700 + 30;
+			
+			random = rand() % 700 + 50;
 			y_c = random;
 		}
 
@@ -139,8 +141,8 @@ public:
 						checkedforCollision = false;
 
 						x_c = x_c_default;
-						srand(time(NULL));
-						random = rand() % 700 + 30;
+						
+						random = rand() % 700 + 50;
 						y_c = random;
 					}
 				}
