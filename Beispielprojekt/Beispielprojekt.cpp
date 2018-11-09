@@ -39,7 +39,7 @@ class GameWindow : public Gosu::Window
 	int score;
 	bool checkedforCollision;
 	bool durchRinggeflogen;
-	int lifs = 4;
+	int lifs = 5;
 	int random = 1;
 	bool beh = false;
 	bool beh2 = false;
@@ -98,6 +98,7 @@ public:
 		case 2: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 3: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 4: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.3, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 5: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.3, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.4, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		}
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
@@ -116,7 +117,7 @@ public:
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
-		if (lifs > 4) { lifs = 4; }
+		if (lifs > 5) { lifs = 5; }
 	
 		if (beh == false)
 		{
@@ -165,9 +166,12 @@ public:
 				isFlying = false; 
 				score = 0; 
 				checkedforCollision = false; 
-				lifs = 4; 
+				lifs = 5; 
 				beh2 = false;
 				ringcounter = 1;
+				x_c = x_c_default;					//nochmal fliegen
+				random = rand() % 700 + 50;
+				y_c = random;
 			}
 			else {
 				y = y + ySpeed;
