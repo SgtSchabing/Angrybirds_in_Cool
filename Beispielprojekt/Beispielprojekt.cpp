@@ -22,7 +22,7 @@ class GameWindow : public Gosu::Window
 	Gosu::Image fire_circle;
 	Gosu::Image heart;
 	Gosu::Song game;
-	Gosu::Font digifont;
+	Gosu::Font digifont, digifont_big, digifont2;
 
 	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
 	const unsigned int w_width = 1500;
@@ -51,7 +51,9 @@ public:
 		fire_circle("fire_circle.png"),
 		game("game.mp3"),
 		heart("heart.png"),
-		digifont(80, ".//DS-DIGI.TTF")
+		digifont(80, ".//DS-DIGI.TTF"),
+		digifont_big(300, ".//DS-DIGI.TTF"), 
+		digifont2(50, ".//DS-DIGI.TTF")
 	{
 	set_caption("Angry Ballz");
 	}
@@ -66,6 +68,7 @@ public:
 	{
 		
 		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
+
 		if(!game.playing()) game.play();
 		
 
@@ -81,9 +84,13 @@ public:
 		
 
 		switch (lifs) {
+		default: {digifont_big.draw_rel("Game", w_width / 2, 450, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
+			digifont_big.draw_rel("Over", w_width / 2, 450+digifont_big.height(), 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
+			digifont2.draw_rel("Press enter to continue", w_width / 2, 450 + digifont_big.height()+50, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::WHITE);
+			break; }
 		case 1: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 2: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
-		case 3: { heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 3: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 4: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.3, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		}
 
@@ -104,7 +111,7 @@ public:
 	{
 		if (beh == false)
 		{
-			srand(time(NULL)); //Zufallsgenerator initialisieren
+			srand(int(time(NULL))); //Zufallsgenerator initialisieren
 			beh = true;
 		}
 							
@@ -128,7 +135,7 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) 
+			if (input().down(Gosu::ButtonName::KB_RETURN)) 
 			{ 
 				isFlying = false; 
 				score = 0; 
@@ -155,10 +162,9 @@ public:
 					}
 				}
 
-				if ((y > w_height + 150) && (lifs > 0)) {
+				if ((y > w_height + 150) && (--lifs > 0)) {
 					isFlying = false;
 					checkedforCollision = false;
-					lifs--;
 				}
 
 			}
