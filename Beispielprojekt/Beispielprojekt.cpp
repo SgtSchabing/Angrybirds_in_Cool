@@ -20,8 +20,9 @@ class GameWindow : public Gosu::Window
 {
 	Gosu::Image ball;
 	Gosu::Image fire_circle;
+	Gosu::Image heart;
 	Gosu::Song game;
-
+	Gosu::Font digifont, digifont_big, digifont2;
 
 	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
 	const unsigned int w_width = 1500;
@@ -48,7 +49,11 @@ public:
 		: Window(1500, 900),
 		ball("planet3.png"), //direkt beim initialisieren mit bild laden
 		fire_circle("fire_circle.png"),
-		game("game.mp3")
+		game("game.mp3"),
+		heart("heart.png"),
+		digifont(80, ".//DS-DIGI.TTF"),
+		digifont_big(300, ".//DS-DIGI.TTF"), 
+		digifont2(50, ".//DS-DIGI.TTF")
 	{
 	set_caption("Angry Ballz");
 	}
@@ -60,8 +65,10 @@ public:
 	void draw() override
 	{
 		
-		Gosu::Font::Font(80, "DS-DIGITAL").draw(std::to_string(score) + "    " + std::to_string(lifs) , 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
-	
+		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
+
+		if(!game.playing()) game.play();
+		
 
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
@@ -74,15 +81,26 @@ public:
 		fire_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.08, 0.2);
 		
 
+		switch (lifs) {
+		default: {digifont_big.draw_rel("Game", w_width / 2, 450, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
+			digifont_big.draw_rel("Over", w_width / 2, 450+digifont_big.height(), 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
+			digifont2.draw_rel("Press enter to continue", w_width / 2, 450 + digifont_big.height()+50, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::WHITE);
+			break; }
+		case 1: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 2: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 3: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		case 4: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.3, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
+		}
+
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 		
 			graphics().draw_line(x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);	
 		}
 
 
-		else 
-		{		//Ball losgeschossen, keine steuerung
-			game.play();
+		else {		//Ball losgeschossen, keine steuerung
+			
+			
 		}
 	}
 
@@ -92,7 +110,7 @@ public:
 	{
 		if (beh == false)
 		{
-			srand(time(NULL)); //Zufallsgenerator initialisieren
+			srand(int(time(NULL))); //Zufallsgenerator initialisieren
 			beh = true;
 		}
 							
@@ -116,7 +134,7 @@ public:
 		}
 
 		else {							//fliegt, keine eingabe
-			if (input().down(Gosu::ButtonName::MS_RIGHT)) 
+			if (input().down(Gosu::ButtonName::KB_RETURN)) 
 			{ 
 				isFlying = false; 
 				score = 0; 
@@ -143,10 +161,9 @@ public:
 					}
 				}
 
-				if ((y > w_height + 150) && (lifs > 0)) {
+				if ((y > w_height + 150) && (--lifs > 0)) {
 					isFlying = false;
 					checkedforCollision = false;
-					lifs--;
 				}
 
 			}

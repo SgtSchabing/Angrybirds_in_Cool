@@ -177,6 +177,7 @@
   <ItemGroup>
     <Image Include="blue_circle.png" />
     <Image Include="fire_circle.png" />
+    <Image Include="heart.png" />
     <Image Include="planet1.png" />
     <Image Include="planet2.png" />
     <Image Include="planet3.png" />
