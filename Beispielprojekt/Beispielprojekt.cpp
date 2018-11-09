@@ -22,6 +22,7 @@ class GameWindow : public Gosu::Window
 	Gosu::Image fire_circle;
 	Gosu::Image heart;
 	Gosu::Song game;
+	Gosu::Song lose;
 	Gosu::Font digifont, digifont_big, digifont2;
 
 	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
@@ -41,6 +42,7 @@ class GameWindow : public Gosu::Window
 	int lifs = 4;
 	int random = 1;
 	bool beh = false;
+	bool beh2 = false;
 
 
 public:
@@ -50,6 +52,7 @@ public:
 		ball("planet3.png"), //direkt beim initialisieren mit bild laden
 		fire_circle("fire_circle.png"),
 		game("game.mp3"),
+		lose("lose.wav"),
 		heart("heart.png"),
 		digifont(80, ".//DS-DIGI.TTF"),
 		digifont_big(300, ".//DS-DIGI.TTF"), 
@@ -67,7 +70,7 @@ public:
 		
 		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
 
-		if(!game.playing()) game.play();
+		
 		
 
 		graphics().draw_quad(							//Schleuderstab
@@ -115,13 +118,27 @@ public:
 		}
 							
 		x_c = x_c - wind;				//Kreis bewegt sich
-		if (x_c < 0)					 //nochmal fliegen
+		if ((x_c < 0)&&(lifs>0))					 //nochmal fliegen
 		{
 			x_c = x_c_default;
 			random = rand() % 700 + 50;
 			y_c = random;
 		}
 
+		if (lifs > 0)
+		{
+			game.play(true);
+		}
+		else
+		{
+			if (beh2 == false)
+			{
+				game.stop();
+				lose.play(false);
+				beh2 = true;
+			}
+			
+		}
 
 		if (!isFlying) {				//fliegt nicht, eingabe
 			x = input().mouse_x();
@@ -140,6 +157,7 @@ public:
 				score = 0; 
 				checkedforCollision = false; 
 				lifs = 4; 
+				beh2 = false;
 			}
 			else {
 				y = y + ySpeed;
