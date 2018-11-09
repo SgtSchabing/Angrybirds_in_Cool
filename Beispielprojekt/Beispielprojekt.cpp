@@ -52,9 +52,7 @@ public:
 	{
 	set_caption("Angry Ballz");
 	}
-
 	
-
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
@@ -78,16 +76,17 @@ public:
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
 		
-			graphics().draw_line(
-				x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);	
+			graphics().draw_line(x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);	
 		}
 
 
-		else {		//Ball losgeschossen, keine steuerung
+		else 
+		{		//Ball losgeschossen, keine steuerung
 			game.play();
-			
 		}
 	}
+
+
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
@@ -162,6 +161,4 @@ int main()
 {
 	GameWindow window;
 	window.show();
-
-
 }
