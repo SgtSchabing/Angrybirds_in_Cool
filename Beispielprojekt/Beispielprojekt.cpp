@@ -66,7 +66,8 @@ public:
 	{
 		
 		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
-	
+		if(!game.playing()) game.play();
+		
 
 		graphics().draw_quad(							//Schleuderstab
 			220, w_height, Gosu::Color::YELLOW,
@@ -94,7 +95,7 @@ public:
 
 
 		else {		//Ball losgeschossen, keine steuerung
-			game.play();
+			
 			
 		}
 	}
