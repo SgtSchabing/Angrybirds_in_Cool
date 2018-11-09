@@ -191,8 +191,12 @@
     <Font Include="DS-DIGI.TTF" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="abschuss.wav" />
     <Media Include="game.mp3" />
+    <Media Include="herz.wav" />
+    <Media Include="hintenangekommen.wav" />
     <Media Include="lose.wav" />
+    <Media Include="treffer.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

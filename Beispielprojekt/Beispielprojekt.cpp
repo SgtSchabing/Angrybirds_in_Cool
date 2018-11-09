@@ -23,6 +23,7 @@ class GameWindow : public Gosu::Window
 	Gosu::Image heart;
 	Gosu::Song game;
 	Gosu::Song lose;
+	Gosu::Sample treffer, herz, hintenangekommen;
 	Gosu::Font digifont, digifont_big, digifont2;
 
 	double x, y, xSpeed, ySpeed,x_c = 1600,y_c = 300, x_c_default = 1600;
@@ -57,7 +58,10 @@ public:
 		heart("heart.png"),
 		digifont(80, ".//DS-DIGI.TTF"),
 		digifont_big(300, ".//DS-DIGI.TTF"), 
-		digifont2(50, ".//DS-DIGI.TTF")
+		digifont2(50, ".//DS-DIGI.TTF"),
+		treffer("treffer.wav"),
+		herz("herz.wav"), 
+		hintenangekommen("hintenangekommen.wav")
 	{
 	set_caption("Angry Ballz");
 	digifont_big.text_width("Game");
@@ -102,8 +106,9 @@ public:
 		}
 
 		if (!isFlying) {		//ball nicht unterwegs, an schleuder
-		
-			graphics().draw_line(x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);	
+			if (lifs > 0) {
+				graphics().draw_line(x, y, Gosu::Color::WHITE, schleuderspitze_x, schleuderspitze_y, Gosu::Color::WHITE, 0.0);
+			}
 		}
 
 
@@ -133,6 +138,7 @@ public:
 			y_c = random;
 			ringcounter++;
 			lifs-- ;
+			hintenangekommen.play(1, 1, false);
 		}
 
 		if (lifs > 0)
@@ -147,6 +153,7 @@ public:
 				lose.play(false);
 				beh2 = true;
 			}
+			isFlying = true;
 			
 		}
 
@@ -183,12 +190,15 @@ public:
 
 					checkedforCollision = true;
 
-					if ((abs(y_c - y) < c_height / 2)) {	//durch ring geflogen
+					if (abs(y_c - y) < c_height / 2) {	//durch ring geflogen
+						
 						if (ringcounter % 4 == 0) { 
 							lifs++;
+							herz.play();
 						}
 						else {
 							score++;
+							treffer.play();
 						}
 						isFlying = false;
 						checkedforCollision = false;
@@ -199,7 +209,7 @@ public:
 					}
 				}
 
-				if ((y > w_height + 150) && (--lifs > 0)) {
+				if ((y > w_height + 150)) {
 					isFlying = false;
 					checkedforCollision = false;
 				}
