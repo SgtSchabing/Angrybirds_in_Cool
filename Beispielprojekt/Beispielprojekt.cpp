@@ -41,6 +41,7 @@ class GameWindow : public Gosu::Window
 	int lifs = 4;
 	int random = 1;
 	bool beh = false;
+	int ringcounter=1;
 
 
 public:
@@ -56,6 +57,9 @@ public:
 		digifont2(50, ".//DS-DIGI.TTF")
 	{
 	set_caption("Angry Ballz");
+	digifont_big.text_width("Game");
+	digifont_big.text_width("Over");
+	digifont2.text_width("Press enter to continue");
 	}
 	
 
@@ -64,7 +68,6 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt --> KEINE LOGIK!!
 	void draw() override
 	{
-		
 		digifont.draw(std::to_string(score), 10, 25, 0.0, 1, 1, Gosu::Color::GREEN);
 
 		if(!game.playing()) game.play();
@@ -78,14 +81,16 @@ public:
 
 		ball.draw_rot(x, y, 0.0, 0, 0.5, 0.5, 0.05, 0.05);
 
-		fire_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.08, 0.2);
+		if (ringcounter % 4 == 0) {
+			heart.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.2, 0.2);
+		}
+		else {
+			fire_circle.draw_rot(x_c, y_c, 0.0, 0, 0.5, 0.5, 0.08, 0.2);
+		}
 		
 
 		switch (lifs) {
-		default: {digifont_big.draw_rel("Game", w_width / 2, 450, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
-			digifont_big.draw_rel("Over", w_width / 2, 450+digifont_big.height(), 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); 
-			digifont2.draw_rel("Press enter to continue", w_width / 2, 450 + digifont_big.height()+50, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::WHITE);
-			break; }
+		default: {digifont_big.draw_rel("Game", w_width / 2, 450, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); digifont_big.draw_rel("Over", w_width / 2, 450+digifont_big.height(), 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::RED); digifont2.draw_rel("Press enter to continue", w_width / 2, 450 + digifont_big.height()+50, 1.0, 0.5, 1.0, 1.0, 1.0, Gosu::Color::WHITE);break; }
 		case 1: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 2: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.1, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
 		case 3: {heart.draw_rot(w_width - 50, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width() * 0.1, 25, 0, 0, 1, 0, 0.1, 0.1); heart.draw_rot(w_width - 50 - heart.width()*0.2, 25, 0, 0, 1, 0, 0.1, 0.1); break; }
@@ -108,6 +113,8 @@ public:
 	// Wird 60x pro Sekunde aufgerufen --> HIER LOGIK!
 	void update() override
 	{
+		if (lifs > 4) { lifs = 4; }
+	
 		if (beh == false)
 		{
 			srand(int(time(NULL))); //Zufallsgenerator initialisieren
@@ -120,6 +127,8 @@ public:
 			x_c = x_c_default;
 			random = rand() % 700 + 50;
 			y_c = random;
+			ringcounter++;
+			lifs-- ;
 		}
 
 
@@ -140,6 +149,7 @@ public:
 				score = 0; 
 				checkedforCollision = false; 
 				lifs = 4; 
+				ringcounter = 1;
 			}
 			else {
 				y = y + ySpeed;
@@ -152,12 +162,18 @@ public:
 					checkedforCollision = true;
 
 					if ((abs(y_c - y) < c_height / 2)) {	//durch ring geflogen
-						score++;
+						if (ringcounter % 4 == 0) { 
+							lifs++;
+						}
+						else {
+							score++;
+						}
 						isFlying = false;
 						checkedforCollision = false;
 						x_c = x_c_default;					//nochmal fliegen
 						random = rand() % 700 + 50;
 						y_c = random;
+						ringcounter++;
 					}
 				}
 
